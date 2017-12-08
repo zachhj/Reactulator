@@ -17,6 +17,7 @@ export default class Calculator extends React.Component {
 
     this.state = {
       value : "",
+      invalid : true
     };
 
     this.handelChange = this.handleChange.bind(this);
@@ -24,7 +25,18 @@ export default class Calculator extends React.Component {
   }
 
   handleChange(e){
+
+    var isnum = /^[0-9 */+-]/.test(e.target.value);
+    if(isnum){
+      this.setState({invalid : false})
+    }
+    else{
+      this.setState({invalid : true})
+    }
+
     this.setState({value : e.target.value});
+
+
   }
 
   keyPress(e){
@@ -49,22 +61,24 @@ export default class Calculator extends React.Component {
       var history = document.getElementById("history")
       history.insertBefore(parent, history.firstChild);
     }
-
-    if(e.keyCode === 13){
-      var problem = e.target.value;
-      try{
-        var result = eval(problem)
-      }
-      catch(TypeError){
-        var result = "not valid input"
-      }
-      finally{
-          addToHistory(problem, result);
-          this.setState({value : ""})
+    if(!this.state.invalid){
+      if(e.keyCode === 13){
+        var problem = e.target.value;
+        try{
+          var result = eval(problem)
+        }
+        catch(TypeError){
+          var result = "not valid input"
+        }
+        finally{
+            addToHistory(problem, result);
+            this.setState({value : "", invalid : true})
+        }
       }
     }
 
   }
+
 
   render(){
     return(
@@ -77,6 +91,7 @@ export default class Calculator extends React.Component {
             value={this.state.value}
             onChange={this.handelChange}
             onKeyDown={this.keyPress}
+            errorText={this.state.invalid}
             fullWidth
           />
 

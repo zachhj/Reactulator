@@ -1,17 +1,8 @@
-.title{
-  text-align: center;
-  background-color: rgb(33,150,243);
-}
 h1 {
   color: white;
   text-align: center;
 }
 
-.problem-input{
-  text-align: center;
-  width: 100%; //fallback
-  width: 100vw;
-}
 
 .parent {
   display: flex;
